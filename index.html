@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>嘉義今順興 — 年菜線上訂購</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧧</text></svg>">
+<style>
+:root{
+  --red:#8f1616; --red-dark:#6d0f0f; --red-deep:#520a0a;
+  --gold:#e8c15a; --gold-light:#f5dfa0; --cream:#fff6e8;
+  --ink:#3a2413;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;background:linear-gradient(180deg,var(--red-deep),var(--red) 30%,var(--red-dark));color:var(--cream);min-height:100vh}
+a{color:var(--gold)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(82,10,10,.95);backdrop-filter:blur(6px);border-bottom:2px solid var(--gold);box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;max-width:1080px;margin:0 auto}
+.hd h1{font-size:1.25rem;color:var(--gold);letter-spacing:2px}
+.hd h1 small{color:var(--cream);font-weight:400;font-size:.8rem;margin-left:8px}
+.cartbtn{background:var(--gold);color:var(--red-deep);border:none;border-radius:24px;padding:8px 18px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit}
+.cartbtn:hover{background:var(--gold-light)}
+
+/* hero */
+.hero{text-align:center;padding:42px 16px 26px}
+.hero .brand{font-size:2.4rem;color:var(--gold);letter-spacing:8px;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.hero .sub{margin-top:10px;font-size:1.1rem;letter-spacing:4px}
+.hero .chefs{margin-top:14px;color:var(--gold-light);font-size:.95rem}
+.lantern{font-size:1.6rem}
+
+/* banner */
+.banner{background:linear-gradient(90deg,#b3872a,var(--gold),#b3872a);color:var(--red-deep);text-align:center;padding:12px 16px;font-weight:700;font-size:1.02rem;letter-spacing:1px}
+.banner a{color:var(--red-deep);text-decoration:underline}
+
+/* sections */
+section{padding:36px 0}
+.sec-title{text-align:center;font-size:1.6rem;color:var(--gold);letter-spacing:6px;margin-bottom:6px}
+.sec-note{text-align:center;font-size:.9rem;color:var(--gold-light);margin-bottom:22px;opacity:.9}
+.divider{width:80px;height:3px;background:var(--gold);margin:10px auto 24px;border-radius:2px}
+
+/* combo */
+.combo{background:linear-gradient(135deg,#5e0c0c,#7c1212);border:2px solid var(--gold);border-radius:16px;padding:26px;display:flex;gap:26px;flex-wrap:wrap;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.combo .cimg{flex:1 1 280px;min-height:230px;border-radius:12px;overflow:hidden;position:relative}
+.combo .cinfo{flex:1.3 1 320px}
+.combo h3{font-size:1.5rem;color:var(--gold);margin-bottom:4px;letter-spacing:2px}
+.combo .price{font-size:1.9rem;color:#ffd97a;font-weight:800;margin:8px 0 14px}
+.combo ol{margin:0 0 18px 1.4em;line-height:1.9;font-size:.98rem}
+.combo ol li::marker{color:var(--gold)}
+
+/* product grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:18px}
+.card{background:rgba(255,246,232,.06);border:1px solid rgba(232,193,90,.45);border-radius:14px;overflow:hidden;transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.35)}
+.ph{height:150px;position:relative;background:linear-gradient(135deg,#a3541e,#c98237);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;display:block}
+.ph .fb{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.ph .fb .em{font-size:2.6rem;filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))}
+.ph .fb .nm{font-size:.85rem;color:#fff;background:rgba(0,0,0,.25);padding:2px 10px;border-radius:10px}
+.ph.hasimg .fb{display:none}
+.cbody{padding:14px;display:flex;flex-direction:column;gap:10px;flex:1}
+.cname{font-size:1.05rem;font-weight:700;letter-spacing:1px}
+.crow{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.cprice{color:#ffd97a;font-size:1.25rem;font-weight:800}
+.stepper{display:flex;align-items:center;gap:0;border:1px solid var(--gold);border-radius:20px;overflow:hidden}
+.stepper button{width:34px;height:32px;border:none;background:transparent;color:var(--gold);font-size:1.2rem;cursor:pointer;line-height:1}
+.stepper button:hover{background:rgba(232,193,90,.2)}
+.stepper .qty{min-width:34px;text-align:center;font-size:1rem;font-weight:700;color:var(--cream)}
+
+/* shipping table */
+.shipbox{background:rgba(0,0,0,.22);border:1px solid rgba(232,193,90,.4);border-radius:14px;padding:22px;overflow-x:auto}
+table.ship{width:100%;border-collapse:collapse;min-width:560px}
+table.ship th,table.ship td{padding:10px 12px;border-bottom:1px solid rgba(232,193,90,.25);text-align:left;font-size:.95rem;vertical-align:top}
+table.ship th{color:var(--gold);white-space:nowrap}
+table.ship td.fee{color:#ffd97a;font-weight:700;white-space:nowrap}
+.shipnote{margin-top:14px;font-size:.88rem;line-height:1.8;color:var(--gold-light)}
+.shipnote li{margin-left:1.3em}
+
+/* order form */
+.orderbox{background:var(--cream);color:var(--ink);border-radius:16px;padding:26px;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.orderbox h3{color:var(--red);font-size:1.3rem;letter-spacing:3px;margin-bottom:16px;text-align:center}
+#cartList{margin-bottom:14px}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:9px 4px;border-bottom:1px dashed #c9a86a;font-size:.98rem;gap:8px}
+.cart-item .nm{flex:1}
+.cart-item .del{background:none;border:none;color:#b33;cursor:pointer;font-size:1.05rem}
+.totals{padding:12px 4px;font-size:1rem;line-height:2}
+.totals .grand{font-size:1.35rem;font-weight:800;color:var(--red)}
+.empty{text-align:center;padding:22px;color:#8a6d4a}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fgrid .full{grid-column:1/-1}
+label.fl{display:block;font-weight:700;font-size:.92rem;margin-bottom:5px;color:var(--red-dark)}
+label.fl .req{color:#c22}
+input,select,textarea{width:100%;padding:10px 12px;border:1.5px solid #c9a86a;border-radius:8px;font-size:1rem;font-family:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--red)}
+.hint{font-size:.8rem;color:#8a6d4a;margin-top:4px}
+.submit{width:100%;margin-top:20px;background:linear-gradient(135deg,var(--red),#b32020);color:#fff;border:none;border-radius:10px;padding:15px;font-size:1.2rem;font-weight:800;letter-spacing:4px;cursor:pointer;font-family:inherit}
+.submit:hover{filter:brightness(1.1)}
+.submit:disabled{opacity:.55;cursor:not-allowed}
+.errmsg{color:#c22;font-size:.9rem;margin-top:10px;text-align:center;min-height:1.2em}
+
+/* success */
+.success{display:none;text-align:center;padding:30px 10px}
+.success .big{font-size:3rem}
+.success h4{color:var(--red);font-size:1.4rem;margin:10px 0}
+.success p{line-height:1.9}
+.oid{display:inline-block;background:#fff;border:2px dashed var(--red);border-radius:8px;padding:6px 18px;font-size:1.2rem;font-weight:800;color:var(--red);margin:10px 0}
+
+footer{background:var(--red-deep);border-top:2px solid var(--gold);padding:30px 16px;text-align:center;font-size:.95rem;line-height:2.1}
+footer .fb-title{color:var(--gold);font-size:1.15rem;letter-spacing:3px;margin-bottom:6px}
+
+@media(max-width:640px){
+  .fgrid{grid-template-columns:1fr}
+  .hero .brand{font-size:1.8rem;letter-spacing:5px}
+  .hd h1{font-size:1.05rem}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <h1>🧧 嘉義今順興<small>年菜線上訂購</small></h1>
+    <button class="cartbtn" onclick="document.getElementById('order').scrollIntoView({behavior:'smooth'})">🛒 購物車 <span id="cartCount">0</span></button>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="lantern">🏮 🐎 🏮</div>
+  <div class="brand">嘉 義 今 順 興</div>
+  <div class="sub">功夫年菜 ‧ 圍爐饗宴 ‧ 冷凍宅配到府</div>
+  <div class="chefs">總舖師:呂建興 ‧ 呂沛霖 ｜ 訂購專線(LINE):0928-712056</div>
+</div>
+
+<div class="banner">
+  📞 如需<b>大量訂購</b>或需辦理<b>外燴</b>,請致電詢問:<a href="tel:0928712056">0928-712056</a>(LINE 同號)
+</div>
+
+<div class="wrap">
+
+<!-- 套餐 -->
+<section id="combo">
+  <div class="sec-title">圍爐饗宴套餐</div>
+  <div class="divider"></div>
+  <div class="combo">
+    <div class="cimg ph" data-img="p20">
+      <div class="fb"><span class="em">🍱</span><span class="nm">圍爐饗宴套餐</span></div>
+    </div>
+    <div class="cinfo">
+      <h3>圍爐饗宴套餐(十道)</h3>
+      <div class="price">NT$ 6,000</div>
+      <ol>
+        <li>金線蓮蟲草花燉雞</li>
+        <li>清湯五彩繽紛鮑魚</li>
+        <li>古早味紅燒魚翅羹</li>
+        <li>煙燻海味鮮味黃魚</li>
+        <li>酒香藥膳大海草蝦</li>
+        <li>碳烤鮮嫩豬肋排骨</li>
+        <li>起司焗烤海皇鮮貝</li>
+        <li>鮮肉菜脯燒拼油飯</li>
+        <li>干貝御品仙佛跳牆</li>
+        <li>蜜蘋果造型流沙包</li>
+      </ol>
+      <div class="crow">
+        <span class="cprice">NT$ 6,000 / 套</span>
+        <div class="stepper" data-id="p20">
+          <button type="button" onclick="chgQty('p20',-1)">−</button>
+          <span class="qty" id="q-p20">0</span>
+          <button type="button" onclick="chgQty('p20',1)">＋</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 單點 -->
+<section id="menu">
+  <div class="sec-title">單點年菜</div>
+  <div class="sec-note">每道皆由總舖師手路菜功夫製作,急速冷凍鎖住美味</div>
+  <div class="grid" id="productGrid"></div>
+</section>
+
+<!-- 配送方式 -->
+<section id="shipping">
+  <div class="sec-title">取貨與冷凍宅配方式</div>
+  <div class="divider"></div>
+  <div class="shipbox">
+    <table class="ship">
+      <tr><th>方式</th><th class="fee">運費</th><th>重量/尺寸限制</th><th>說明</th></tr>
+      <tr><td>🏠 現場自取</td><td class="fee">免運費</td><td>—</td><td>嘉義縣民雄鄉秀林村東義11-58號</td></tr>
+      <tr><td>🟢 全家 冷凍店到店</td><td class="fee">NT$99/箱<br><small>(取貨付款 NT$114)</small></td><td>單箱限重 10kg<br>三邊總長 ≦105cm、單邊 ≦45cm</td><td>寄至指定全家門市,-18°C 全程冷凍</td></tr>
+      <tr><td>🔴 7-11 冷凍交貨便</td><td class="fee">NT$200/箱</td><td>單箱限重 10kg<br>長+寬+高 ≦105cm、最長邊 ≦45cm</td><td>寄至指定 7-11 門市(超商如有運費優惠,將於確認時調整)</td></tr>
+      <tr><td>🐈‍⬛ 黑貓 冷凍宅急便</td><td class="fee">NT$160〜290/箱<br><small>(依材積 60/90/120cm)</small></td><td>單箱限重 20kg<br>三邊總長 ≦120cm</td><td>低溫宅配到府,結帳先以 90cm(NT$225)預估,實際材積若有差異將電話確認</td></tr>
+    </table>
+    <ul class="shipnote">
+      <li>萊爾富目前僅提供常溫店到店,<b>無冷凍配送服務</b>,故不提供此選項。</li>
+      <li>訂購量較大時將分箱寄送(每箱皆需運費),或建議改用黑貓宅配/現場自取,確認電話中將與您討論最划算方式。</li>
+      <li>商品皆為急速冷凍出貨,收到後請儘速放入冷凍庫保存,食用前加熱即可上桌。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- 訂購表單 -->
+<section id="order">
+  <div class="sec-title">確認訂單</div>
+  <div class="divider"></div>
+  <div class="orderbox">
+    <div id="formArea">
+      <h3>🛒 我的購物車</h3>
+      <div id="cartList"><div class="empty">尚未選購商品,請往上選擇喜歡的年菜 🍲</div></div>
+      <div class="totals" id="totals" style="display:none">
+        <div>商品小計:NT$ <span id="tSub">0</span></div>
+        <div>運費:NT$ <span id="tFee">0</span> <small id="feeNote" style="color:#8a6d4a"></small></div>
+        <div class="grand">總金額:NT$ <span id="tAll">0</span></div>
+      </div>
+
+      <h3 style="margin-top:20px">📋 訂購人資料</h3>
+      <form id="orderForm" onsubmit="return submitOrder(event)">
+        <div class="fgrid">
+          <div>
+            <label class="fl">姓名 <span class="req">＊</span></label>
+            <input type="text" id="fName" required placeholder="請輸入姓名" autocomplete="name">
+          </div>
+          <div>
+            <label class="fl">聯絡電話 <span class="req">＊</span></label>
+            <input type="tel" id="fPhone" required placeholder="09xxxxxxxx" autocomplete="tel">
+          </div>
+          <div class="full">
+            <label class="fl">Email(Gmail) <span class="req">＊</span></label>
+            <input type="email" id="fEmail" required placeholder="example@gmail.com" autocomplete="email">
+            <div class="hint">訂購成功確認信將寄送至此信箱,請填寫正確</div>
+          </div>
+          <div>
+            <label class="fl">取貨/配送方式 <span class="req">＊</span></label>
+            <select id="fShip" onchange="onShipChange()">
+              <option value="pickup">🏠 現場自取(免運費)</option>
+              <option value="fami">🟢 全家 冷凍店到店(+NT$99/箱)</option>
+              <option value="seven">🔴 7-11 冷凍交貨便(+NT$200/箱)</option>
+              <option value="tcat">🐈‍⬛ 黑貓 冷凍宅急便(預估+NT$225)</option>
+            </select>
+          </div>
+          <div>
+            <label class="fl">付款方式 <span class="req">＊</span></label>
+            <select id="fPay"></select>
+          </div>
+          <div class="full" id="storeField" style="display:none">
+            <label class="fl" id="storeLabel">門市資訊 <span class="req">＊</span></label>
+            <input type="text" id="fStore" placeholder="">
+            <div class="hint" id="storeHint"></div>
+          </div>
+          <div class="full">
+            <label class="fl">備註</label>
+            <textarea id="fNote" rows="3" placeholder="希望取貨日期、過敏原、其他需求皆可備註;大量訂購或外燴請直接致電 0928-712056"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="submit" id="submitBtn">送 出 訂 單</button>
+        <div class="errmsg" id="errMsg"></div>
+      </form>
+    </div>
+
+    <div class="success" id="successArea">
+      <div class="big">🎉</div>
+      <h4>訂購成功!</h4>
+      <div>您的訂單編號</div>
+      <div class="oid" id="okOrderId"></div>
+      <p>訂購確認信已寄至您的信箱,店家將盡快與您電話確認取貨時間與付款細節。<br>
+      如有任何問題,歡迎來電/LINE:<b>0928-712056</b></p>
+      <button class="cartbtn" onclick="location.reload()">繼續選購</button>
+    </div>
+  </div>
+</section>
+
+</div><!--wrap-->
+
+<footer>
+  <div class="fb-title">嘉 義 今 順 興</div>
+  總舖師:呂建興 ‧ 呂沛霖<br>
+  訂購專線(LINE):<a href="tel:0928712056">0928-712056</a><br>
+  取貨地址:嘉義縣民雄鄉秀林村東義11-58號<br>
+  <small style="opacity:.75">大量訂購 ‧ 外燴辦桌 歡迎來電洽詢</small>
+</footer>
+
+<script src="config.js"></script>
+<script>
+/* ================= 商品資料 ================= */
+const PRODUCTS = [
+  {id:'p01',name:'蒲燒櫻蝦油飯',price:400,em:'🍚'},
+  {id:'p02',name:'養生藥膳排骨',price:450,em:'🍲'},
+  {id:'p03',name:'鳳梨糖醋鮮魚',price:450,em:'🐟'},
+  {id:'p04',name:'藥燉排骨',price:450,em:'🍲'},
+  {id:'p05',name:'筍乾燜腿庫',price:500,em:'🍖'},
+  {id:'p06',name:'煙燻大黃魚',price:550,em:'🐟'},
+  {id:'p07',name:'碳烤豬肋排',price:600,em:'🍖'},
+  {id:'p08',name:'紅燒魚翅羹',price:600,em:'🥘'},
+  {id:'p09',name:'藥燉羊肉湯',price:600,em:'🍲'},
+  {id:'p10',name:'茶樹菇雞湯',price:600,em:'🍲'},
+  {id:'p11',name:'金線蓮蟲草花燉雞湯',price:600,em:'🍲'},
+  {id:'p12',name:'人參燉雞',price:600,em:'🐔'},
+  {id:'p13',name:'清湯五彩鮑魚',price:650,em:'🦪'},
+  {id:'p14',name:'酒香海草蝦',price:650,em:'🦐'},
+  {id:'p15',name:'焗烤海皇貝(10粒)',price:700,em:'🧀'},
+  {id:'p16',name:'酥炸軟殼蟹(10隻)',price:700,em:'🦀'},
+  {id:'p17',name:'鮭魚砂鍋魚頭鍋',price:700,em:'🍲'},
+  {id:'p18',name:'御品佛跳牆(不附甕)',price:700,em:'🏺'},
+  {id:'p19',name:'古早味網絲肉捲(1捲)',price:120,em:'🥓'},
+  {id:'p20',name:'圍爐饗宴套餐(十道)',price:6000,em:'🍱',combo:true},
+];
+const SHIP = {
+  pickup:{label:'現場自取(嘉義縣民雄鄉秀林村東義11-58號)',fee:0,perBox:false},
+  fami:{label:'全家 冷凍店到店',fee:99,perBox:true,limitKg:10},
+  seven:{label:'7-11 冷凍交貨便',fee:200,perBox:true,limitKg:10},
+  tcat:{label:'黑貓 冷凍宅急便(預估90cm)',fee:225,perBox:false},
+};
+const PAY_OPTIONS = {
+  pickup:[['cash','自取現場付款'],['transfer','銀行轉帳(確認後告知帳號)']],
+  fami:[['transfer','銀行轉帳(確認後告知帳號)'],['cod','超商取貨付款(運費改為NT$114/箱)']],
+  seven:[['transfer','銀行轉帳(確認後告知帳號)']],
+  tcat:[['transfer','銀行轉帳(確認後告知帳號)']],
+};
+const cart = {}; // id -> qty
+
+/* ================= 商品渲染(含圖片專區機制) ================= */
+function imgHTML(id,em,name){
+  return `<img src="images/products/${id}.jpg" alt="${name}"
+    onload="this.parentElement.classList.add('hasimg')"
+    onerror="if(!this.dataset.png){this.dataset.png=1;this.src='images/products/${id}.png';}else{this.remove();}">`;
+}
+function renderProducts(){
+  const g = document.getElementById('productGrid');
+  g.innerHTML = PRODUCTS.filter(p=>!p.combo).map(p=>`
+    <div class="card">
+      <div class="ph">${imgHTML(p.id,p.em,p.name)}
+        <div class="fb"><span class="em">${p.em}</span><span class="nm">${p.name}</span></div>
+      </div>
+      <div class="cbody">
+        <div class="cname">${p.name}</div>
+        <div class="crow">
+          <span class="cprice">NT$ ${p.price}</span>
+          <div class="stepper">
+            <button type="button" onclick="chgQty('${p.id}',-1)">−</button>
+            <span class="qty" id="q-${p.id}">0</span>
+            <button type="button" onclick="chgQty('${p.id}',1)">＋</button>
+          </div>
+        </div>
+      </div>
+    </div>`).join('');
+  // 套餐圖片
+  const cimg = document.querySelector('.combo .cimg');
+  cimg.insertAdjacentHTML('afterbegin', imgHTML('p20','🍱','圍爐饗宴套餐'));
+}
+
+/* ================= 購物車 ================= */
+function chgQty(id,d){
+  cart[id] = Math.max(0,(cart[id]||0)+d);
+  if(cart[id]===0) delete cart[id];
+  document.getElementById('q-'+id).textContent = cart[id]||0;
+  renderCart();
+}
+function cartItems(){
+  return Object.keys(cart).map(id=>{
+    const p = PRODUCTS.find(x=>x.id===id);
+    return {id,name:p.name,price:p.price,qty:cart[id],amount:p.price*cart[id]};
+  });
+}
+function estBoxes(){
+  // 超商單箱限重約10kg,粗估每3道菜1箱(湯品較重),至少1箱
+  const n = cartItems().reduce((s,i)=>s+i.qty,0);
+  return Math.max(1, Math.ceil(n/3));
+}
+function calcFee(){
+  const ship = document.getElementById('fShip').value;
+  const pay = document.getElementById('fPay').value;
+  const s = SHIP[ship];
+  let unit = s.fee;
+  if(ship==='fami' && pay==='cod') unit = 114;
+  return s.perBox ? unit*estBoxes() : unit;
+}
+function renderCart(){
+  const items = cartItems();
+  const list = document.getElementById('cartList');
+  const totals = document.getElementById('totals');
+  const count = items.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent = count;
+  if(items.length===0){
+    list.innerHTML = '<div class="empty">尚未選購商品,請往上選擇喜歡的年菜 🍲</div>';
+    totals.style.display='none';
+    return;
+  }
+  list.innerHTML = items.map(i=>`
+    <div class="cart-item">
+      <span class="nm">${i.name} × ${i.qty}</span>
+      <span>NT$ ${i.amount.toLocaleString()}</span>
+      <button class="del" title="移除" onclick="chgQty('${i.id}',-${i.qty})">✕</button>
+    </div>`).join('');
+  const sub = items.reduce((s,i)=>s+i.amount,0);
+  const fee = calcFee();
+  const ship = document.getElementById('fShip').value;
+  const boxes = estBoxes();
+  document.getElementById('tSub').textContent = sub.toLocaleString();
+  document.getElementById('tFee').textContent = fee.toLocaleString();
+  document.getElementById('feeNote').textContent =
+    SHIP[ship].perBox && boxes>1 ? `(預估 ${boxes} 箱,實際箱數將於確認電話告知)` :
+    ship==='tcat' ? '(以90cm材積預估,實際若有差異將電話確認)' : '';
+  document.getElementById('tAll').textContent = (sub+fee).toLocaleString();
+  totals.style.display='block';
+}
+
+/* ================= 配送/付款連動 ================= */
+function onShipChange(){
+  const ship = document.getElementById('fShip').value;
+  const paySel = document.getElementById('fPay');
+  paySel.innerHTML = PAY_OPTIONS[ship].map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
+  paySel.onchange = renderCart;
+  const sf = document.getElementById('storeField');
+  const lab = document.getElementById('storeLabel');
+  const inp = document.getElementById('fStore');
+  const hint = document.getElementById('storeHint');
+  if(ship==='fami'||ship==='seven'){
+    sf.style.display='block'; inp.required=true;
+    lab.innerHTML = (ship==='fami'?'全家取貨門市 <span class="req">＊</span>':'7-11 取貨門市 <span class="req">＊</span>');
+    inp.placeholder = '例:民雄門市(店號123456)';
+    hint.textContent = '請填寫門市名稱與店號,可至該超商官網「門市查詢」查店號';
+  }else if(ship==='tcat'){
+    sf.style.display='block'; inp.required=true;
+    lab.innerHTML = '宅配收件地址 <span class="req">＊</span>';
+    inp.placeholder = '例:嘉義市西區○○路100號5樓';
+    hint.textContent = '黑貓低溫宅配到府,請填寫完整地址';
+  }else{
+    sf.style.display='none'; inp.required=false; inp.value='';
+  }
+  renderCart();
+}
+
+/* ================= 送出訂單 ================= */
+function makeOrderId(){
+  const d = new Date();
+  const pad = n=>String(n).padStart(2,'0');
+  return 'JS'+String(d.getFullYear()).slice(2)+pad(d.getMonth()+1)+pad(d.getDate())
+    +pad(d.getHours())+pad(d.getMinutes())+Math.floor(Math.random()*90+10);
+}
+async function submitOrder(ev){
+  ev.preventDefault();
+  const err = document.getElementById('errMsg');
+  err.textContent = '';
+  const items = cartItems();
+  if(items.length===0){ err.textContent = '購物車是空的,請先選購商品'; return false; }
+  const name = document.getElementById('fName').value.trim();
+  const phone = document.getElementById('fPhone').value.trim();
+  const email = document.getElementById('fEmail').value.trim();
+  if(!/^09\d{8}$/.test(phone) && !/^0\d{1,2}-?\d{6,8}$/.test(phone)){
+    err.textContent = '電話格式不正確,手機請輸入 09 開頭共 10 碼'; return false;
+  }
+  const ship = document.getElementById('fShip').value;
+  const paySel = document.getElementById('fPay');
+  const payLabel = paySel.options[paySel.selectedIndex].text;
+  const sub = items.reduce((s,i)=>s+i.amount,0);
+  const fee = calcFee();
+  const payload = {
+    orderId: makeOrderId(),
+    name, phone, email,
+    ship, shipLabel: SHIP[ship].label,
+    store: document.getElementById('fStore').value.trim(),
+    pay: paySel.value, payLabel,
+    items,
+    detail: items.map(i=>`${i.name} x${i.qty} ($${i.amount})`).join(';\n'),
+    subtotal: sub, fee, total: sub+fee,
+    boxes: SHIP[ship].perBox ? estBoxes() : '',
+    note: document.getElementById('fNote').value.trim(),
+  };
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = '訂單傳送中…';
+
+  if(!window.ORDER_API_URL){
+    // 後台尚未連接:改用 mailto 備援
+    const body = encodeURIComponent(
+      `【今順興年菜訂單】${payload.orderId}\n姓名:${name}\n電話:${phone}\nEmail:${email}\n`+
+      `配送:${payload.shipLabel} ${payload.store}\n付款:${payLabel}\n\n${payload.detail}\n\n`+
+      `小計 $${sub} + 運費 $${fee} = 總計 $${payload.total}\n備註:${payload.note}`);
+    location.href = `mailto:${window.OWNER_EMAIL||''}?subject=${encodeURIComponent('年菜訂單 '+payload.orderId)}&body=${body}`;
+    showSuccess(payload.orderId);
+    return false;
+  }
+  try{
+    const res = await fetch(window.ORDER_API_URL, {method:'POST', body: JSON.stringify(payload)});
+    const j = await res.json();
+    if(!j.ok) throw new Error(j.error||'server error');
+    showSuccess(payload.orderId);
+  }catch(e){
+    btn.disabled = false; btn.textContent = '送 出 訂 單';
+    err.textContent = '訂單傳送失敗,請重試一次;若持續失敗請直接致電/LINE 0928-712056 訂購';
+  }
+  return false;
+}
+function showSuccess(oid){
+  document.getElementById('formArea').style.display='none';
+  const s = document.getElementById('successArea');
+  s.style.display='block';
+  document.getElementById('okOrderId').textContent = oid;
+  s.scrollIntoView({behavior:'smooth'});
+}
+
+renderProducts();
+onShipChange();
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>商品圖片專區 — 今順興訂購系統管理</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;background:#faf5ec;color:#3a2413;padding:24px}
+.wrap{max-width:960px;margin:0 auto}
+h1{color:#8f1616;letter-spacing:2px;margin-bottom:4px}
+.sub{color:#8a6d4a;margin-bottom:20px}
+.steps{background:#fff;border:1px solid #e0cba0;border-radius:12px;padding:18px 22px;margin-bottom:24px;line-height:2}
+.steps b{color:#8f1616}
+.steps code{background:#f3e8d2;padding:2px 8px;border-radius:6px;font-size:.95em}
+.upbtn{display:inline-block;background:#8f1616;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:700;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
+.card{background:#fff;border:1px solid #e0cba0;border-radius:12px;overflow:hidden}
+.ph{height:130px;background:linear-gradient(135deg,#d8c49a,#c9a86a);display:flex;align-items:center;justify-content:center;position:relative}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph .none{color:#7a5c34;font-size:.9rem}
+.info{padding:10px 12px}
+.nm{font-weight:700;font-size:.95rem}
+.fn{margin-top:4px}
+.fn code{background:#f3e8d2;padding:2px 8px;border-radius:6px;font-size:.9rem;color:#8f1616;font-weight:700}
+.st{font-size:.8rem;margin-top:4px}
+.ok{color:#2c7a2c}.no{color:#b33}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>🖼️ 商品圖片專區</h1>
+<div class="sub">在這裡查看每道菜對應的圖片檔名與目前狀態(此頁僅供店家管理使用,客人不會看到)</div>
+
+<div class="steps">
+  <b>如何更換/新增商品照片?</b><br>
+  1. 手機或電腦拍好菜色照片,建議<b>正方形或橫式</b>、檔案 1MB 以內較佳<br>
+  2. 把檔案<b>重新命名</b>成下方對應的檔名,例如 <code>p01.jpg</code>(也支援 .png)<br>
+  3. 到 GitHub 圖片資料夾上傳(用手機瀏覽器也可以):<br>
+  <a class="upbtn" href="https://github.com/jackize123/jinshunxing/upload/main/images/products" target="_blank">📤 前往 GitHub 上傳圖片</a><br>
+  4. 按下綠色 <b>Commit changes</b> 按鈕,等約 1 分鐘網站就會自動顯示新照片<br>
+  5. 換照片=直接上傳同檔名檔案覆蓋即可;重新整理此頁可確認狀態
+</div>
+
+<div class="grid" id="grid"></div>
+</div>
+<script>
+const PRODUCTS=[
+ ['p01','蒲燒櫻蝦油飯'],['p02','養生藥膳排骨'],['p03','鳳梨糖醋鮮魚'],['p04','藥燉排骨'],
+ ['p05','筍乾燜腿庫'],['p06','煙燻大黃魚'],['p07','碳烤豬肋排'],['p08','紅燒魚翅羹'],
+ ['p09','藥燉羊肉湯'],['p10','茶樹菇雞湯'],['p11','金線蓮蟲草花燉雞湯'],['p12','人參燉雞'],
+ ['p13','清湯五彩鮑魚'],['p14','酒香海草蝦'],['p15','焗烤海皇貝(10粒)'],['p16','酥炸軟殼蟹(10隻)'],
+ ['p17','鮭魚砂鍋魚頭鍋'],['p18','御品佛跳牆(不附甕)'],['p19','古早味網絲肉捲(1捲)'],['p20','圍爐饗宴套餐']
+];
+document.getElementById('grid').innerHTML = PRODUCTS.map(([id,name])=>`
+ <div class="card">
+   <div class="ph" id="ph-${id}"><span class="none">尚未上傳圖片</span></div>
+   <div class="info">
+     <div class="nm">${name}</div>
+     <div class="fn">檔名:<code>${id}.jpg</code></div>
+     <div class="st no" id="st-${id}">❌ 未上傳(顯示預設底圖)</div>
+   </div>
+ </div>`).join('');
+PRODUCTS.forEach(([id])=>{
+  const tryLoad = ext => {
+    const img = new Image();
+    img.onload = ()=>{
+      document.getElementById('ph-'+id).innerHTML='';
+      document.getElementById('ph-'+id).appendChild(img);
+      const st=document.getElementById('st-'+id);
+      st.className='st ok'; st.textContent='✅ 已上傳('+id+'.'+ext+')';
+    };
+    img.onerror = ()=>{ if(ext==='jpg') tryLoad('png'); };
+    img.src = 'images/products/'+id+'.'+ext+'?t='+Date.now();
+  };
+  tryLoad('jpg');
+});
+</script>
+</body>
+</html>
