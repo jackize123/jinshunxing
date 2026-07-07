@@ -12,4 +12,4 @@
 window.ORDER_API_URL = "https://script.google.com/macros/s/AKfycbyZnTvT7bm7tl41ob0r8XwG7rmzTgZtdxh4d8ORVtTgBtWCUxDygt5tc2fuXyB08A-hVA/exec";
 
 /* 店家接收訂單通知的信箱(備援 mailto 用;Apps Script 內另有設定) */
-window.OWNER_EMAIL = "claude04@ydlo.ylc.edu.tw";
+window.OWNER_EMAIL = "jackize123@gmail.com";

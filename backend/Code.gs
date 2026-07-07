@@ -13,7 +13,7 @@
  */
 
 // ★ 店家接收訂單通知的信箱(可改成任何信箱)
-const OWNER_EMAIL = 'claude04@ydlo.ylc.edu.tw';
+const OWNER_EMAIL = 'jackize123@gmail.com';
 const SHOP_NAME   = '嘉義今順興';
 const SHOP_PHONE  = '0928-712056';
 const SHOP_ADDR   = '嘉義縣民雄鄉秀林村東義11-58號';
