@@ -9,7 +9,7 @@
    尚未設定時(留空字串),送出訂單會改用開啟郵件軟體的備援方式。
    設定教學請看 repo 內的「後台設定說明.md」。
    ============================================================ */
-window.ORDER_API_URL = "";
+window.ORDER_API_URL = "https://script.google.com/macros/s/AKfycbyZnTvT7bm7tl41ob0r8XwG7rmzTgZtdxh4d8ORVtTgBtWCUxDygt5tc2fuXyB08A-hVA/exec";
 
 /* 店家接收訂單通知的信箱(備援 mailto 用;Apps Script 內另有設定) */
 window.OWNER_EMAIL = "claude04@ydlo.ylc.edu.tw";
