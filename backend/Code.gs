@@ -83,7 +83,7 @@ function doPost(e) {
 
     const custHtml =
       '<div style="font-family:Microsoft JhengHei,sans-serif;color:#3a2413">' +
-      '<h2 style="color:#8f1616">🧧 ' + SHOP_NAME + ' 訂購成功確認</h2>' +
+      '<h2 style="color:#8f1616">' + SHOP_NAME + ' 訂購成功確認</h2>' +
       '<p>' + d.name + ' 您好,感謝您的訂購!以下是您的訂單內容:</p>' +
       '<p><b>訂單編號:</b>' + d.orderId + '</p>' + tableHtml +
       '<p><b>配送方式:</b>' + d.shipLabel + (d.store ? '<br><b>門市/地址:</b>' + d.store : '') +
@@ -94,7 +94,7 @@ function doPost(e) {
       '<p style="color:#888;font-size:12px">取貨地址:' + SHOP_ADDR + '</p></div>';
 
     if (d.email) {
-      GmailApp.sendEmail(d.email, '【' + SHOP_NAME + '】訂購成功確認 — 訂單 ' + d.orderId,
+      GmailApp.sendEmail(d.email, '【' + SHOP_NAME + '】訂購成功確認 - 訂單 ' + d.orderId,
         '您的訂單 ' + d.orderId + ' 已成立,總金額 NT$' + d.total,
         { htmlBody: custHtml, name: SHOP_NAME });
     }
@@ -102,14 +102,14 @@ function doPost(e) {
     // ---- 寄信給店家 ----
     const ownerHtml =
       '<div style="font-family:Microsoft JhengHei,sans-serif;color:#3a2413">' +
-      '<h2 style="color:#8f1616">📥 新訂單 ' + d.orderId + '</h2>' +
+      '<h2 style="color:#8f1616">新訂單 ' + d.orderId + '</h2>' +
       '<p><b>姓名:</b>' + d.name + '<br><b>電話:</b>' + d.phone +
       '<br><b>Email:</b>' + d.email + '</p>' + tableHtml +
       '<p><b>配送:</b>' + d.shipLabel + (d.store ? '<br><b>門市/地址:</b>' + d.store : '') +
       (d.boxes ? '<br><b>預估箱數:</b>' + d.boxes : '') +
       '<br><b>付款:</b>' + d.payLabel +
       (d.note ? '<br><b>備註:</b>' + d.note : '') + '</p>' +
-      '<p>👉 <a href="' + ss.getUrl() + '">開啟訂單試算表</a></p></div>';
+      '<p><a href="' + ss.getUrl() + '" style="color:#8f1616;font-weight:bold">開啟訂單試算表查看完整資料</a></p></div>';
 
     GmailApp.sendEmail(OWNER_EMAIL,
       '【新訂單】' + d.orderId + ' ' + d.name + ' NT$' + d.total.toLocaleString(),
